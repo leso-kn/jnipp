@@ -1,6 +1,7 @@
 // Copyright since 2016 : Evgenii Shatunov (github.com/FrankStain/jnipp)
 // Apache 2.0 License
 #include <jnipp/jnipp.h>
+#include <cstring>
 
 
 namespace Jni
@@ -76,7 +77,7 @@ namespace Jni
 		Invalidate();
 
 		JNI_EXPECTS( class_name != nullptr );
-		JNI_EXPECTS( strlen( class_name ) > 0 );
+		JNI_EXPECTS( std::strlen( class_name ) > 0 );
 
 		m_class_ref = VirtualMachine::GetInstance().GetClassReference( class_name );
 
