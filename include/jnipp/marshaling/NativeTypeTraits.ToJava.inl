@@ -2,6 +2,9 @@
 // Apache 2.0 License
 #pragma once
 
+#include <string>
+#include <string.h>
+#include <uchar.h>
 
 namespace Jni
 {
@@ -26,7 +29,18 @@ namespace Marshaling
 
 	inline void NativeTypeTraits<std::string>::ToJava( const NativeType& source, JavaType& destination )
 	{
-		NativeTypeTraits<const char*>::ToJava( source.c_str(), destination );
+		std::u16string wstr = u"";
+		char16_t c16str[3] = u"\0";
+		mbstate_t mbs;
+		for (const auto& it: source)
+		{
+			memset (&mbs, 0, sizeof (mbs));
+			memmove(c16str, u"\0\0\0", 3);
+			mbrtoc16 (c16str, &it, 3, &mbs);
+			wstr.append(std::u16string(c16str));
+		}
+
+		NativeTypeTraits<const char16_t*>::ToJava( wstr.c_str(), destination );
 	}
 
 	inline void NativeTypeTraits<std::u16string>::ToJava( const NativeType& source, JavaType& destination )

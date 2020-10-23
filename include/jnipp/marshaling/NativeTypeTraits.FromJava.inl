@@ -2,6 +2,9 @@
 // Apache 2.0 License
 #pragma once
 
+#include <string>
+#include <string.h>
+#include <uchar.h>
 
 namespace Jni
 {
@@ -18,11 +21,21 @@ namespace Marshaling
 		JNI_RETURN_IF( source == nullptr );
 
 		auto local_env				= VirtualMachine::GetLocalEnvironment();
-		const jsize string_length	= local_env->GetStringUTFLength( source );
+		const jsize string_length	= local_env->GetStringLength( source );
 		JNI_RETURN_IF( string_length == 0 );
 
-		destination.resize( static_cast<size_t>( string_length ), ' ' );
-		local_env->GetStringUTFRegion( source, 0, string_length, &destination.front() );
+		std::u16string buf( static_cast<size_t>( string_length ), ' ' );
+		local_env->GetStringRegion( source, 0, string_length, reinterpret_cast<jchar*>( &buf.front() ) );
+
+		char cstr[3] = "\0";
+		mbstate_t mbs;
+		for (const auto& it: buf)
+		{
+			memset (&mbs, 0, sizeof (mbs));
+			memmove(cstr, "\0\0\0", 3);
+			c16rtomb (cstr, it, &mbs);
+			destination.append(std::string(cstr));
+		}
 	}
 
 	inline void NativeTypeTraits<std::u16string>::FromJava( const JavaType& source, NativeType& destination )
