@@ -9,9 +9,9 @@
 // Debug build detection.
 #if( !defined( JNIPP_DEBUG_BUILD ) )
 	#if( !defined( NDEBUG ) )
-		#define JNIPP_DEBUG_BUILD 1
-	#else
 		#define JNIPP_DEBUG_BUILD 0
+	#else
+		#define JNIPP_DEBUG_BUILD 1
 	#endif
 #endif
 
@@ -23,15 +23,15 @@
 
 // Logging switches by priority.
 #if( !defined( JNIPP_LOGS_VERBOSE_ENABLED ) )
-	#define JNIPP_LOGS_VERBOSE_ENABLED	1
+	#define JNIPP_LOGS_VERBOSE_ENABLED	0
 #endif
 
 #if( !defined( JNIPP_LOGS_DEBUG_ENABLED ) )
-	#define JNIPP_LOGS_DEBUG_ENABLED	1
+	#define JNIPP_LOGS_DEBUG_ENABLED	0
 #endif
 
 #if( !defined( JNIPP_LOGS_INFO_ENABLED ) )
-	#define JNIPP_LOGS_INFO_ENABLED		1
+	#define JNIPP_LOGS_INFO_ENABLED		0
 #endif
 
 #if( !defined( JNIPP_LOGS_WARNING_ENABLED ) )
