@@ -97,7 +97,7 @@ namespace Jni
 
 	const bool VirtualMachine::RegisterClassNatives( const NativeBindingTable& bindings )
 	{
-		JNI_RETURN_IF_E( !IsValid(), nullptr, "%s:%d - Attempt to use Uninitialized virtual machine.", __func__, __LINE__ );
+		JNI_RETURN_IF_E( !IsValid(), false, "%s:%d - Attempt to use Uninitialized virtual machine.", __func__, __LINE__ );
 
 		auto local_env	= GetLocalEnvironment();
 		auto java_class	= GetInstance().GetClassReference( bindings.class_name );
